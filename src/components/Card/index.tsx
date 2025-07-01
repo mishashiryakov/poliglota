@@ -9,7 +9,7 @@ export const Card = ({ styles, children }: Props) => {
   return (
     <div
       className={twMerge(
-        "backdrop-blur-md bg-white/30 border border-white/30 rounded-xl shadow-lg px-25 py-10",
+        "backdrop-blur-md bg-white/30 border border-white/30 rounded-xl shadow-lg px-20 py-10",
         styles
       )}
     >

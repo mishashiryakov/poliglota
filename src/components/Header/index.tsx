@@ -17,6 +17,12 @@ export const Header = () => {
         >
           Dictionary
         </Link>
+        <Link
+          href="/quizz"
+          className={pathname === "/quizz" ? "font-bold" : ""}
+        >
+          Quizz
+        </Link>
       </nav>
     </header>
   );

@@ -1,15 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { NewWord } from "@/types/words";
 import { supabase } from "../../utils/supabase/supabase";
 
-interface Props {
-  pl: string;
-  ru: string;
-  category: string;
-}
-
 export const useAddWord = () => {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: async ({ pl, ru, category }: Props) => {
+    mutationFn: async ({ pl, ru, category }: NewWord) => {
       const { data, error } = await supabase
         .from("words")
         .insert([{ pl, ru, category }])
@@ -17,6 +14,9 @@ export const useAddWord = () => {
 
       if (error) throw new Error(error.message);
       return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["words"] });
     },
   });
 };

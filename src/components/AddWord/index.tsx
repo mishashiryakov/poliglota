@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { Card } from "../Card";
 import { Input } from "../Input";
 import { useAddWord } from "@/hooks/tanStackQueries/useAddWord";
@@ -8,7 +9,9 @@ export const AddWord = () => {
   const [russian, setRussian] = useState<string>("");
   const [category, setCategory] = useState<string>("");
 
-  const { mutate, isLoading, error, data } = useAddWord();
+  const { mutate } = useAddWord();
+
+  const disableAddButton = !polish || !russian || !category;
 
   return (
     <Card styles="flex flex-col gap-5">
@@ -17,9 +20,22 @@ export const AddWord = () => {
       <Input label="Russian" value={russian} setValue={setRussian} />
       <Input label="Category" value={category} setValue={setCategory} />
       <button
-        className="bg-blue-500 text-white rounded-md w-[75px] cursor-pointer py-2"
+        className={twMerge(
+          "bg-blue-500 text-white rounded-md w-[75px] cursor-pointer py-2",
+          disableAddButton && "bg-gray-400 "
+        )}
+        disabled={disableAddButton}
         onClick={() => {
-          mutate({ pl: polish, ru: russian, category });
+          mutate(
+            { pl: polish, ru: russian, category },
+            {
+              onSuccess: () => {
+                setPolish("");
+                setRussian("");
+                setCategory("");
+              },
+            }
+          );
         }}
       >
         Add
