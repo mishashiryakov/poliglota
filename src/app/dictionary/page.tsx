@@ -1,8 +1,11 @@
 "use client";
-
-import { Card } from "@/components/Card";
-import { Filters, FiltersObject } from "@/components/Filters";
 import { useState } from "react";
+import { Card } from "@/components/Card";
+import { AddWord } from "@/components/AddWord";
+import { Filters, FiltersObject } from "@/components/Filters";
+import { useWords } from "@/hooks/tanStackQueries/useWords";
+
+// Porshe19961! - supabase mishashiryakov org password
 
 const words = {
   sylwetka: {
@@ -133,6 +136,11 @@ const availableFilters: FiltersObject = Object.values(words).reduce(
 export default function Dictionary() {
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
+  const { data, isLoading, isFetching, error } = useWords();
+  console.log("isFetching", isFetching);
+  console.log("isLoading", isLoading);
+  console.log("data", data);
+
   return (
     <>
       <Filters
@@ -140,23 +148,27 @@ export default function Dictionary() {
         activeFilters={activeFilters}
         setActiveFilters={setActiveFilters}
       />
-      <Card styles="flex flex-col gap-3 overflow-auto h-[60vh] custom-scroll">
-        {Object.entries(words)
-          .filter(([_, value]) => {
-            if (activeFilters.length === 0) {
-              return true;
-            } else {
-              return activeFilters.includes(value.category);
-            }
-          })
-          .map(([key, value], index) => (
-            <div key={index} className="flex items-center capitalize">
-              <p className="min-w-[150px]">{key}</p>
-              <span className="mx-2">-</span>
-              <p className="ml-[40px]">{value.ru}</p>
-            </div>
-          ))}
-      </Card>
+      <div className="w-[100%] flex flex-col gap-3">
+        <h1 className="text-3xl font-bold px-25">My Words</h1>
+        <Card styles="flex flex-col gap-3 overflow-auto max-h-[60vh] custom-scroll w-[100%]">
+          {Object.entries(words)
+            .filter(([_, value]) => {
+              if (activeFilters.length === 0) {
+                return true;
+              } else {
+                return activeFilters.includes(value.category);
+              }
+            })
+            .map(([key, value], index) => (
+              <div key={index} className="flex items-center capitalize">
+                <p className="min-w-[150px]">{key}</p>
+                <span className="mx-2">-</span>
+                <p className="ml-[40px]">{value.ru}</p>
+              </div>
+            ))}
+        </Card>
+        <AddWord />
+      </div>
     </>
   );
 }
