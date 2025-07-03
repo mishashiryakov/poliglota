@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { twMerge } from "tailwind-merge";
 import { Card } from "../Card";
-import { Input } from "../Input";
+import { Input } from "../Atoms/Input";
+import { Button } from "../Atoms/Button";
 import { useAddWord } from "@/hooks/tanStackQueries/useAddWord";
 
 export const AddWord = () => {
@@ -19,12 +19,7 @@ export const AddWord = () => {
       <Input label="Polish" value={polish} setValue={setPolish} />
       <Input label="Russian" value={russian} setValue={setRussian} />
       <Input label="Category" value={category} setValue={setCategory} />
-      <button
-        className={twMerge(
-          "bg-blue-500 text-white rounded-md w-[75px] cursor-pointer py-2",
-          disableAddButton && "bg-gray-400 "
-        )}
-        disabled={disableAddButton}
+      <Button
         onClick={() => {
           mutate(
             { pl: polish, ru: russian, category },
@@ -37,9 +32,10 @@ export const AddWord = () => {
             }
           );
         }}
+        disabled={disableAddButton}
       >
         Add
-      </button>
+      </Button>
     </Card>
   );
 };

@@ -13,5 +13,6 @@ export const useWords = () => {
       if (error) throw new Error(error.message);
       return data;
     },
+    staleTime: 3000,
   });
 };

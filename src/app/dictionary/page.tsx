@@ -15,30 +15,29 @@ export default function Dictionary() {
   const { data } = useWords();
 
   useEffect(() => {
-    const availableFilters: FiltersObject | null =
-      data?.reduce((acc, curValue) => {
+    if (data) {
+      const availableFilters: FiltersObject = data?.reduce((acc, curValue) => {
         const category = curValue.category;
         if (!acc[category]) {
           acc[category] = { value: category, active: false };
         }
         return acc;
-      }, {} as FiltersObject) || null;
+      }, {} as FiltersObject);
 
-    setAvailableFilters(availableFilters);
+      setAvailableFilters(availableFilters);
+    }
   }, [data]);
 
   return (
     <>
-      {availableFilters && (
-        <Filters
-          availableFilters={availableFilters}
-          activeFilters={activeFilters}
-          setActiveFilters={setActiveFilters}
-        />
-      )}
-      <div className="w-[100%] flex flex-col gap-3">
-        {data && (
-          <>
+      {availableFilters && data && (
+        <>
+          <Filters
+            availableFilters={availableFilters}
+            activeFilters={activeFilters}
+            setActiveFilters={setActiveFilters}
+          />
+          <div className="w-[100%] flex flex-col gap-3">
             <h1 className="text-3xl font-bold px-25">My Words</h1>
             <Card styles="flex flex-col gap-3 overflow-auto max-h-[55vh] custom-scroll w-[100%]">
               {data
@@ -57,10 +56,11 @@ export default function Dictionary() {
                   </div>
                 ))}
             </Card>
-          </>
-        )}
-        <AddWord />
-      </div>
+
+            <AddWord />
+          </div>
+        </>
+      )}
     </>
   );
 }

@@ -28,7 +28,7 @@ export default function RootLayout({
           <div className="flex flex-col h-[100%] items-baseline gap-10 w-[70%] mx-auto">
             {children}
           </div>
-          <Footer />
+          {/* <Footer /> */}
         </ReactQueryProvider>
       </body>
     </html>
